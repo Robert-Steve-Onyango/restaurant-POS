@@ -200,7 +200,7 @@ class RestaurantBillingSystem():
         heading_label.place(x=500, y=10)
 
         # Sub-heading
-        sub_heading_label = Label(self.root, text="PAYBILL NUMBER 8881308", font=("arial", 16, "italic"), fg="green")
+        sub_heading_label = Label(self.root, text="TILL 8881308", font=("arial", 16, "italic"), fg="green")
         sub_heading_label.place(x=520, y=50)
 
         # Display Menu
@@ -257,7 +257,7 @@ class RestaurantBillingSystem():
         self.bill_textbox.insert(END, "-----------------------\n")
         self.bill_textbox.insert(END, "Bill Details\n")
         self.bill_textbox.insert(END, "-----------------------\n")
-        self.bill_textbox.insert(END, "PAYBILL NO: 8881308\n")
+        self.bill_textbox.insert(END, "TILL NO: 8881308\n")
         self.bill_textbox.insert(END, "-----------------------\n")
 
         for item, quantity in self.orders.items():
