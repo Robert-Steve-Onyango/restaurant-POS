@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter.simpledialog import askstring
 from datetime import datetime
+import os
 
 
 # import pandas as pd
@@ -200,7 +201,7 @@ class RestaurantBillingSystem():
         heading_label.place(x=500, y=10)
 
         # Sub-heading
-        sub_heading_label = Label(self.root, text="TILL 8881308", font=("arial", 16, "italic"), fg="green")
+        sub_heading_label = Label(self.root, text="TILL NUMBER 8881308", font=("arial", 16, "italic"), fg="green")
         sub_heading_label.place(x=520, y=50)
 
         # Display Menu
@@ -209,7 +210,7 @@ class RestaurantBillingSystem():
 
         # Create Save Bill Button
         self.save_bill_button = Button(self.bill_frame, text="Save Bill", font=("arial", 14, "bold"),
-                                       command=self.save_bill)
+                                       command=self.save_and_print_bill)
         self.save_bill_button.place(x=10, y=450)
 
         self.saved_bills = {}
@@ -257,7 +258,7 @@ class RestaurantBillingSystem():
         self.bill_textbox.insert(END, "-----------------------\n")
         self.bill_textbox.insert(END, "Bill Details\n")
         self.bill_textbox.insert(END, "-----------------------\n")
-        self.bill_textbox.insert(END, "TILL NO: 8881308\n")
+        self.bill_textbox.insert(END, "Till NO: 8881308\n")
         self.bill_textbox.insert(END, "-----------------------\n")
 
         for item, quantity in self.orders.items():
@@ -268,19 +269,20 @@ class RestaurantBillingSystem():
     def clear_bill(self):
         self.bill_textbox.delete("1.0", END)
 
-    def save_bill(self):
-        try:
-            # Ask user for the file name
-            file_name = askstring("Served by: ", "You were served by:", parent=self.root)
 
-            if file_name:
-                with open(file_name, "w") as file:
-                    file.write(self.bill_textbox.get("1.0", END))
-                messagebox.showinfo("Save Bill", "Bill saved successfully.")
-        except Exception as e:
-            messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
-    def save_bill(self):
+    def view_saved_bills(self):
+        # Display a list of saved bills with their codes, file names, and timestamps
+        for code, info in self.saved_bills.items():
+            print(f"Code: {code}, File Name: {info['file_name']}, Timestamp: {info['timestamp']}")
+
+    def exit_restaurant(self):
+        self.root.destroy()
+
+    def mainloop(self):
+        self.root.mainloop()
+
+    def save_and_print_bill(self):
         try:
             # Generate a unique code for the bill
             bill_code = f"NTNY{len(self.saved_bills) + 1:03}"
@@ -300,19 +302,17 @@ class RestaurantBillingSystem():
                 }
 
                 messagebox.showinfo("Save Bill", f"Bill saved successfully with code: {bill_code}")
+
+                # Print the bill
+                self.print_bill(file_name)
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
-    def view_saved_bills(self):
-        # Display a list of saved bills with their codes, file names, and timestamps
-        for code, info in self.saved_bills.items():
-            print(f"Code: {code}, File Name: {info['file_name']}, Timestamp: {info['timestamp']}")
+    def print_bill(self, file_name):
+    # Print the content of the bill
+        os.startfile(file_name, "print")
 
-    def exit_restaurant(self):
-        self.root.destroy()
 
-    def mainloop(self):
-        self.root.mainloop()
 
 
 root = Tk()
